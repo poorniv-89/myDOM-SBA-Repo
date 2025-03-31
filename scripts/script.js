@@ -4,7 +4,8 @@ const mainEl = document.querySelector('div');
 const gameOptions = ['rock', 'paper', 'scissors'];
 console.log(mainEl);
 
-
+userResponseYes.classList.add("response-btn");
+userResponseNo.classList.add("response-btn");
 userResponseYes.addEventListener('click',handleUserResponse);
 userResponseNo.addEventListener('click',handleUserResponse);
 
@@ -22,9 +23,10 @@ function handleUserResponse(e)
         }
         let textEl = document.createElement('h1');
         textEl.textContent="Goodbye! Thanks for visiting the page!"
-        document.body.appendChild(textEl);
+        mainEl.appendChild(textEl);
         setTimeout(function() {
-            window.close();}, 3000);
+            window.close();
+        }, 3000);
     }
 }
 function createUserName()
@@ -33,15 +35,20 @@ function createUserName()
     while (mainEl.firstChild) {
         mainEl.firstChild.remove();
     }
+ 
     let newForm = document.createElement('form');
+    newForm.classList.add("form-container");
+    let inputContainer = document.createElement("div"); 
     let userNameLabel = document.createElement('label');
     userNameLabel.textContent = "Enter your Username";
+    userNameLabel.style.display ="flex";
     let username = document.createElement("input");
     let userNameBtn = document.createElement('button');
     userNameBtn.textContent='Enter';
     username.type='text';
-    newForm.appendChild(userNameLabel);  
-    newForm.appendChild(username);
+    inputContainer.appendChild(userNameLabel);  
+    inputContainer.appendChild(username);
+    newForm.appendChild(inputContainer);  
     newForm.appendChild(userNameBtn);
     mainEl.appendChild(newForm);
     newForm.addEventListener('submit', validateUserName);
@@ -61,7 +68,9 @@ function startGame(username) {
             mainEl.firstChild.remove();
         }
         let fragment = document.createDocumentFragment();
-
+           let textEl = document.createElement('h1');
+        textEl.textContent="Make your choice";
+        fragment.appendChild(textEl);
         gameOptions.forEach(option => {
             let btn = document.createElement("button");
             let img = document.createElement("img");
@@ -71,29 +80,30 @@ function startGame(username) {
             img.width = 150;           
             btn.appendChild(img);
             btn.addEventListener('click', playGame);
-            
             fragment.appendChild(btn); 
         });
     
         mainEl.appendChild(fragment); 
     }
         function playGame(e){
-            // e.preventDefault();
+            e.preventDefault();
             let userChoice = e.target.alt;
+           let imgBtn = e.target.parentNode;
+            imgBtn.style.backgroundColor = "lightblue";
             console.log(userChoice);
             let computerChoice = gameOptions[Math.floor(Math.random()*3)];
             console.log(computerChoice);
            
             if (userChoice === computerChoice) {
-                console.log("It's a tie!");
+                prompt("Its a tie! Do you wanna play again?")
             } else if (
                 (userChoice === "rock" && computerChoice === "scissors") ||
                 (userChoice === "paper" && computerChoice === "rock") ||
                 (userChoice === "scissors" && computerChoice === "paper")
             ) {
-                console.log("You win!");
+                prompt("You win! Do you wanna play again?")
             } else {
-                console.log("You lose!");
+                prompt("You lost! Do you wanna play again?")
 
             }
         }
