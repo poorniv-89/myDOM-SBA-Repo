@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,27 @@
     <script defer src="../scripts/script.js"></script>
     <title>Document</title>
 </head>
+
 <body>
-    <div id ='main-container'>
+    <div id='main-container'>
         <h1>Do you wanna play Rock Paper Scissors?</h1>
-        <div class ="btn-container">
-        <button id="user-response-yes-btn">Yes</button>
-        <button id="user-response-no-btn">No</button>
-    </div>
+        <div class="btn-container">
+            <button id="user-response-yes-btn">Yes</button>
+            <button id="user-response-no-btn">No</button>
+        </div>
+        <div id='user-details-container'>
+            <form id="user-details-form">
+                <div id="username-container">
+                <label for="username">Username</label>
+                <input type="text" name="username" required><br/></div>
+                <div id="email-container">
+                <label for="email">Email ID</label>
+                <input type="email" name="emailId"><br/></div>
+                <button type="submit">Enter</button>
+            </form>
+            
+        </div>
+
     </div>
 </body>
 </html>

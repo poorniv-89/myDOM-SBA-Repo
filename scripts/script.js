@@ -1,9 +1,12 @@
 const userResponseYes = document.getElementById('user-response-yes-btn');
 const userResponseNo = document.getElementById('user-response-no-btn');
+const userDetailsContainer = document.getElementById('user-details-container');
+const userDetailsForm = document.getElementById('user-details-form');
+userDetailsForm.addEventListener('submit', validateForm);
 const mainEl = document.querySelector('div');
 const gameOptions = ['rock', 'paper', 'scissors'];
 let currentUsername = '';
-console.log(mainEl);
+
 userResponseYes.classList.add("response-btn");
 userResponseNo.classList.add("response-btn");
 userResponseYes.addEventListener('click', handleUserResponse);
@@ -12,12 +15,10 @@ userResponseNo.addEventListener('click', handleUserResponse);
 function handleUserResponse(e) {
     let userResponse = e.target.textContent.toLowerCase();
     if (userResponse == 'yes') {
-        createUserName();
+        userDetailsContainer.style.display = "block";
     }
     else {
-        while (mainEl.firstChild) {
-            mainEl.firstChild.remove();
-        }
+        clearMainEl();
         let textEl = document.createElement('h1');
         textEl.textContent = "Goodbye! Thanks for visiting the page!"
         mainEl.appendChild(textEl);
@@ -26,57 +27,46 @@ function handleUserResponse(e) {
         }, 3000);
     }
 }
-function createUserName() {
-    console.log(mainEl);
-    while (mainEl.firstChild) {
-        mainEl.firstChild.remove();
+function validateForm(e) {
+    e.preventDefault(); 
+    const username = document.querySelector("input[name='username']").value;
+    const email = document.querySelector("input[name='emailId']");
+
+    if (!email.value)
+         {
+        alert("Please fill out the email field");
+        email.focus();
+        return;
     }
 
-    let newForm = document.createElement('form');
-    newForm.classList.add("form-container");
-    let inputContainer = document.createElement("div");
-    let userNameLabel = document.createElement('label');
-    userNameLabel.textContent = "Create Username";
-    userNameLabel.style.display = "flex";
-    let username = document.createElement("input");
-    let userNameBtn = document.createElement('button');
-    userNameBtn.id = "userNameBtn";
-    userNameBtn.textContent = 'Enter';
-    username.type = 'text';
-    inputContainer.appendChild(userNameLabel);
-    inputContainer.appendChild(username);
-    newForm.appendChild(inputContainer);
-    newForm.appendChild(userNameBtn);
-    mainEl.appendChild(newForm);
-    newForm.addEventListener('submit', validateUserName);
-    function validateUserName(e) {
-        e.preventDefault();
-        if (!username.value) {
-            alert("Please enter an username before starting the game!");
-            return;
-        }
-        startGame(username.value);
-    }
+    console.log("Form submitted successfully!");
+    startGame(username); 
 }
 function startGame(username) {
     currentUsername = username; 
-    while (mainEl.firstChild) {
-        mainEl.firstChild.remove();
-    }
-    let fragment = document.createDocumentFragment();
+    clearMainEl();
+    
     let textEl = document.createElement('h1');
+    textEl.textContent = "Choose Rock, Paper or Scissors";
+    mainEl.appendChild(textEl);
+    let fragment = document.createDocumentFragment();
+    let imageContainer = document.createElement('div');
+    imageContainer.classList.add("image-container");
     gameOptions.forEach(option => {
+        let choiceContainer = document.createElement("div");
+        choiceContainer.classList.add("choice-container");
         let btn = document.createElement("button");
         btn.classList.add("game-choice-btn");
         let img = document.createElement("img");
 
         img.src = `../images/${option}.jpg`;
         img.alt = option;
-        img.style.objectFit = "fill";
-        img.style.overflow = "hidden";
+        img.style.objectFit = "contain";
         btn.appendChild(img);
         btn.addEventListener('click', playGame);
-        fragment.appendChild(btn);
+        choiceContainer.appendChild(btn); 
+        imageContainer.appendChild(choiceContainer);
+        fragment.appendChild(imageContainer);
     });
 
     mainEl.appendChild(fragment);
@@ -85,9 +75,7 @@ function playGame(e) {
     e.preventDefault();
     let userChoice = e.target.alt;
     let result = '';
-    while (mainEl.firstChild) {
-        mainEl.firstChild.remove();
-    }
+    clearMainEl();
     let imageContainer = document.createElement('div');
     imageContainer.classList.add("image-container");
 
@@ -102,7 +90,7 @@ function playGame(e) {
     userContainer.appendChild(userLabel);
     userContainer.appendChild(userImg);
 
-     let computerChoice = gameOptions[Math.floor(Math.random() * 3)];
+    let computerChoice = gameOptions[Math.floor(Math.random() * 3)];
     let compContainer = document.createElement('div');
     compContainer.classList.add("choice-container");
     let compLabel = document.createElement('h3');
@@ -139,9 +127,8 @@ function playGame(e) {
 
     let playAgainLink = document.createElement('a');
     playAgainLink.href = "#";
-    playAgainLink.textContent = "Play Again?";
+    playAgainLink.textContent = "Play again?";
     playAgainLink.style.display = "block";
-    playAgainLink.style.marginTop = "1rem";
     playAgainLink.style.color = "blue";
     playAgainLink.style.textDecoration = "underline";
     playAgainLink.addEventListener('click', () =>  resetGame()); 
@@ -149,7 +136,6 @@ function playGame(e) {
     resultContainer.appendChild(resultText);
     resultContainer.appendChild(playAgainLink);
     
-    // Append resultContainer to imageContainer (middle of images)
     imageContainer.appendChild(resultContainer);
 }
 function resetGame() {
@@ -158,4 +144,8 @@ function resetGame() {
     }
     startGame(currentUsername);
 }
-
+function clearMainEl() {
+    while (mainEl.firstChild) {
+        mainEl.firstChild.remove();
+    }
+}
