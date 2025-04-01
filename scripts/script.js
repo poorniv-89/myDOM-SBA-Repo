@@ -15,7 +15,7 @@ userResponseNo.addEventListener('click', handleUserResponse);
 function handleUserResponse(e) {
     let userResponse = e.target.textContent.toLowerCase();
     if (userResponse == 'yes') {
-        userDetailsContainer.style.display = "block";
+        userDetailsContainer.style.display = 'block';
     }
     else {
         clearMainEl();
