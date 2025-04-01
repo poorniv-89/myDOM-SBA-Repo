@@ -16,6 +16,8 @@ function handleUserResponse(e) {
     let userResponse = e.target.textContent.toLowerCase();
     if (userResponse == 'yes') {
         userDetailsContainer.style.display = 'block';
+        mainEl.style.backgroundImage = "none"; 
+        mainEl.style.backgroundColor = " rgba(89, 87, 85, 0.15)";
     }
     else {
         clearMainEl();
@@ -45,7 +47,7 @@ function validateForm(e) {
 function startGame(username) {
     currentUsername = username; 
     clearMainEl();
-    
+    mainEl.style.background="";
     let textEl = document.createElement('h1');
     textEl.textContent = "Choose Rock, Paper or Scissors";
     mainEl.appendChild(textEl);
@@ -76,6 +78,7 @@ function playGame(e) {
     let userChoice = e.target.alt;
     let result = '';
     clearMainEl();
+
     let imageContainer = document.createElement('div');
     imageContainer.classList.add("image-container");
 
@@ -109,16 +112,20 @@ function playGame(e) {
 
     if (userChoice === computerChoice) {
         result="It's a tie";
+        mainEl.style.backgroundImage = "none"; 
+        mainEl.style.backgroundColor = " rgba(89, 87, 85, 0.15)";
     } else if (
         (userChoice === "rock" && computerChoice === "scissors") ||
         (userChoice === "paper" && computerChoice === "rock") ||
         (userChoice === "scissors" && computerChoice === "paper")
     ) {
         result = "You win!";
+        mainEl.style.background="url(../images/confetti.gif)";
+        mainEl.style.backgroundSize="cover";
     } else {
         result = "You lost!";
-
-
+        mainEl.style.backgroundImage = "none"; 
+        mainEl.style.backgroundColor = "  rgba(89, 87, 85, 0.15)";
     }
     let resultContainer = document.createElement('div');
     resultContainer.classList.add("result-container");
